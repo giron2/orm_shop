@@ -21,26 +21,16 @@ def car_details_view(request, car_id):
 		template_name = 'main/details.html'
 		return render(request, template_name, context)  # передайте необходимый контекст
 	except Car.DoesNotExist:
-		raise Http404('Car not found')
+		raise Http404('Автомобиль не найден')
 
 
 def sales_by_car(request, car_id):
 	try:
-		# получите авто и его продажи
 		car = Car.objects.get(pk=car_id)
-		id_client = Sale.objects.filter(car_id=car_id).values_list("client", flat=True).get()
-		buyer = Client.objects.get(id=id_client)
-		sales = [{ 'client': {
-		'last_name': buyer.last_name,
-		'name': buyer.name,
-		'middle_name': buyer.middle_name,
-		'phone_number': buyer.phone_number,
-		},
-		'created_at': Sale.objects.filter(car_id=car_id).values_list("created_at", flat=True).get()
-		}]
+		sales = Sale.objects.filter(car_id=car_id)
 		context = {'car': car, 'sales': sales}
 		template_name = 'main/sales.html'
 		  # передайте необходимый контекст
 	except Car.DoesNotExist:
-		raise Http404('Car not found')
+		raise Http404('Нет данных о продаже этого автомобиля :(')
 	return render(request, template_name, context)

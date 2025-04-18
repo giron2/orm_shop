@@ -65,8 +65,8 @@ class Car(models.Model):
 
 class Sale(models.Model):
     id = models.AutoField(primary_key=True)
-    client  = models.OneToOneField(Client, on_delete=models.CASCADE)
-    car  = models.OneToOneField(Car, on_delete=models.CASCADE)
+    client  = models.ForeignKey(Client, on_delete=models.CASCADE)
+    car  = models.ForeignKey(Car, on_delete=models.CASCADE)
     created_at  = models.DateField(auto_now_add=True)
     def __str__(self):
-        return f'{self.client}({self.car})'
+        return f'{self.client}{self.car}{self.created_at}'
